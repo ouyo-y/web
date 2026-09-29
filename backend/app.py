@@ -2,6 +2,7 @@ import os
 import time
 import random
 import secrets
+import requests
 
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
@@ -137,16 +138,11 @@ def run():
             "error": str(error)
         }), 400
 
-    # Simulace zpracování
-    time.sleep(1)
 
-response = requests.post(
-        "https://wordwall.net/leaderboardajax/addentry",
-        data=payload
-    )
-    
+    # Výsledky
     results = []
 
+    # Každý bot
     for n in range(count):
 
         bot_name = (
@@ -155,14 +151,30 @@ response = requests.post(
             else f"{name}{random.randint(1, 1000)}"
         )
 
+        payload = {
+            "score": score,
+            "time": time_ms,
+            "name": bot_name,
+            "mode": count,
+            "activityId": activity_id,
+            "templateId": template_id,
+        }
+
+        response = requests.post(
+            "https://wordwall.net/leaderboardajax/addentry",
+            data=payload
+        )
+
         results.append({
             "number": n + 1,
             "name": bot_name,
             "score": score,
             "time": time_ms,
             "activityId": activity_id,
-            "templateId": template_id
+            "templateId": template_id,
+            "status_code": response.status_code
         })
+
 
     return jsonify({
         "success": True,
