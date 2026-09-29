@@ -140,6 +140,11 @@ def run():
     # Simulace zpracování
     time.sleep(1)
 
+response = requests.post(
+        "https://wordwall.net/leaderboardajax/addentry",
+        data=payload
+    )
+    
     results = []
 
     for n in range(count):
