@@ -1,5 +1,6 @@
 import os
 import time
+import random
 import secrets
 
 from flask import Flask, request, jsonify, session
@@ -9,7 +10,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 
-# Flask session
 app.secret_key = os.environ.get(
     "SECRET_KEY",
     secrets.token_hex(32)
@@ -20,7 +20,6 @@ app.config.update(
     SESSION_COOKIE_SECURE=True,
 )
 
-# CORS
 CORS(
     app,
     supports_credentials=True,
@@ -29,8 +28,6 @@ CORS(
     ]
 )
 
-
-# Login údaje z Render Environment Variables
 USERNAME = os.environ.get(
     "APP_USERNAME",
     "admin"
@@ -42,18 +39,10 @@ PASSWORD_HASH = os.environ.get(
 )
 
 
-# --------------------------------------------------
-# HOME
-# --------------------------------------------------
-
 @app.route("/")
 def home():
     return "Python backend is running!"
 
-
-# --------------------------------------------------
-# LOGIN
-# --------------------------------------------------
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -66,14 +55,6 @@ def login():
         PASSWORD_HASH,
         password
     )
-
-    # Dočasný debug
-    print("LOGIN DEBUG:")
-    print("username received:", repr(username))
-    print("username expected:", repr(USERNAME))
-    print("username match:", username == USERNAME)
-    print("password ok:", password_ok)
-    print("hash starts:", PASSWORD_HASH[:30])
 
     if username != USERNAME or not password_ok:
         return jsonify({
@@ -90,10 +71,6 @@ def login():
     })
 
 
-# --------------------------------------------------
-# LOGOUT
-# --------------------------------------------------
-
 @app.route("/logout", methods=["POST"])
 def logout():
     session.clear()
@@ -102,10 +79,6 @@ def logout():
         "success": True
     })
 
-
-# --------------------------------------------------
-# CHECK AUTH
-# --------------------------------------------------
 
 @app.route("/check-auth", methods=["GET"])
 def check_auth():
@@ -121,10 +94,6 @@ def check_auth():
     })
 
 
-# --------------------------------------------------
-# RUN
-# --------------------------------------------------
-
 @app.route("/run", methods=["POST"])
 def run():
 
@@ -137,90 +106,58 @@ def run():
     data = request.get_json() or {}
 
     try:
-        score = int(
-            data.get("score", 0)
-        )
-
-        time_ms = int(
-            data.get("time", 0)
-        )
-
-        name = str(
-            data.get("name", "")
-        ).strip()
-
-        count = int(
-            data.get("count", 1)
-        )
-
-        activity_id = int(
-            data.get("activityId", 0)
-        )
-
-        template_id = int(
-            data.get("templateId", 0)
-        )
-
-        # Kontrola vstupů
+        score = int(data.get("score", 0))
+        time_ms = int(data.get("time", 0))
+        name = str(data.get("name", "")).strip()
+        count = int(data.get("count", 1))
+        activity_id = int(data.get("activityId", 0))
+        template_id = int(data.get("templateId", 0))
 
         if not name:
-            raise ValueError(
-                "Jméno je povinné."
-            )
+            raise ValueError("Jméno je povinné.")
 
         if score < 0:
-            raise ValueError(
-                "Score nemůže být záporné."
-            )
+            raise ValueError("Score nemůže být záporné.")
 
         if time_ms < 0:
-            raise ValueError(
-                "Čas nemůže být záporný."
-            )
+            raise ValueError("Čas nemůže být záporný.")
 
         if count < 1 or count > 100:
-            raise ValueError(
-                "Count musí být mezi 1 a 100."
-            )
+            raise ValueError("Count musí být mezi 1 a 100.")
 
         if activity_id < 0:
-            raise ValueError(
-                "Activity ID není platné."
-            )
+            raise ValueError("Activity ID není platné.")
 
         if template_id < 0:
-            raise ValueError(
-                "Template ID není platné."
-            )
+            raise ValueError("Template ID není platné.")
 
     except (ValueError, TypeError) as error:
-
         return jsonify({
             "success": False,
             "error": str(error)
         }), 400
-
 
     # Simulace zpracování
     time.sleep(1)
 
     results = []
 
-    for i in range(count):
+    for n in range(count):
+
+        bot_name = (
+            name
+            if count == 1
+            else f"{name}{random.randint(1, 1000)}"
+        )
 
         results.append({
-            "number": i + 1,
-            "name": (
-                name
-                if count == 1
-                else f"{name}{i + 1}"
-            ),
+            "number": n + 1,
+            "name": bot_name,
             "score": score,
             "time": time_ms,
             "activityId": activity_id,
             "templateId": template_id
         })
-
 
     return jsonify({
         "success": True,
@@ -229,18 +166,8 @@ def run():
     })
 
 
-# --------------------------------------------------
-# START SERVER
-# --------------------------------------------------
-
 if __name__ == "__main__":
-
     app.run(
         host="0.0.0.0",
-        port=int(
-            os.environ.get(
-                "PORT",
-                5000
-            )
-        )
+        port=int(os.environ.get("PORT", 5000))
     )
