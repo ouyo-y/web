@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="cs">
 
@@ -12,20 +13,79 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #080b12;
+            --panel: rgba(15, 19, 29, .78);
+            --panel-2: rgba(20, 25, 37, .82);
+            --border: rgba(255,255,255,.09);
+            --text: #f4f7fb;
+            --muted: #8791a5;
+            --purple: #7565ff;
+            --purple2: #a158ff;
+            --green: #42df91;
+            --red: #ff5364;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
             font-family: Inter, Arial, sans-serif;
+            color: var(--text);
             background:
-                radial-gradient(circle at top left, #243b70 0, transparent 35%),
-                radial-gradient(circle at bottom right, #351b59 0, transparent 35%),
-                #080b12;
-            color: #fff;
+                radial-gradient(circle at 10% 10%, #243b70 0, transparent 32%),
+                radial-gradient(circle at 90% 85%, #351b59 0, transparent 32%),
+                radial-gradient(circle at 50% 50%, #12182a 0, transparent 42%),
+                var(--bg);
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: .12;
+            pointer-events: none;
+            animation: floatingGlow 10s ease-in-out infinite alternate;
+        }
+
+        body::before {
+            background: #725cff;
+            top: -150px;
+            left: -100px;
+        }
+
+        body::after {
+            background: #9b4dff;
+            right: -150px;
+            bottom: -150px;
+            animation-delay: 3s;
+        }
+
+        @keyframes floatingGlow {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(70px, 50px) scale(1.2);
+            }
         }
 
         .hidden {
             display: none !important;
         }
+
+        /* =========================
+           LOGIN
+        ========================= */
 
         .center {
             min-height: 100vh;
@@ -35,106 +95,184 @@
             padding: 20px;
         }
 
-        .card {
+        .login-card {
+            position: relative;
             width: 100%;
-            max-width: 440px;
-            padding: 32px;
-            border: 1px solid rgba(255,255,255,.1);
-            border-radius: 24px;
-            background: rgba(17, 21, 32, .82);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 30px 80px rgba(0,0,0,.45);
+            max-width: 430px;
+            padding: 38px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            background: linear-gradient(
+                145deg,
+                rgba(25, 30, 45, .88),
+                rgba(10, 14, 23, .82)
+            );
+            backdrop-filter: blur(25px);
+            box-shadow:
+                0 35px 100px rgba(0,0,0,.55),
+                inset 0 1px 0 rgba(255,255,255,.04);
+            animation: cardIn .7s cubic-bezier(.2,.8,.2,1);
         }
 
-        .logo {
-            width: 58px;
-            height: 58px;
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-logo {
+            width: 70px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #6d5dfc, #9b5cff);
-            font-size: 27px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(109,93,252,.35);
+            border-radius: 21px;
+            margin-bottom: 25px;
+            font-size: 31px;
+            background:
+                linear-gradient(135deg, #6b5cff, #a04dff);
+            box-shadow:
+                0 15px 40px rgba(108,91,255,.35);
+            animation: logoFloat 3s ease-in-out infinite;
         }
 
-        h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-5px) rotate(2deg);
+            }
         }
 
-        .subtitle {
-            margin: 0 0 28px;
-            color: #8f98aa;
+        .login-card h1 {
+            margin: 0;
+            font-size: 34px;
+            letter-spacing: -.8px;
+        }
+
+        .login-card .small-text {
+            margin: 8px 0 30px;
+            color: var(--muted);
+            font-size: 14px;
         }
 
         label {
             display: block;
-            margin: 16px 0 7px;
-            color: #b8c0d0;
-            font-size: 14px;
+            margin: 17px 0 8px;
+            color: #b9c2d2;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .input-wrap {
+            position: relative;
         }
 
         input {
             width: 100%;
-            padding: 14px 15px;
+            padding: 15px 16px;
             border: 1px solid #293143;
-            border-radius: 12px;
+            border-radius: 14px;
             outline: none;
-            background: #111621;
+            background: rgba(8, 12, 20, .8);
             color: white;
             font-size: 15px;
-            transition: .2s;
+            transition: .25s;
+        }
+
+        input::placeholder {
+            color: #5f6879;
         }
 
         input:focus {
-            border-color: #7465ff;
-            box-shadow: 0 0 0 3px rgba(116,101,255,.15);
-        }
-
-        button {
-            border: 0;
-            border-radius: 12px;
-            padding: 14px 18px;
-            color: white;
-            background: linear-gradient(135deg, #6757f5, #9255ff);
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        button:hover {
+            border-color: #7768ff;
+            box-shadow:
+                0 0 0 4px rgba(116,101,255,.12),
+                0 0 30px rgba(116,101,255,.08);
             transform: translateY(-1px);
-            filter: brightness(1.08);
         }
 
-        button:disabled {
-            opacity: .5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        /* Login button */
 
-        .full {
+        .login-button {
             width: 100%;
-            margin-top: 24px;
+            margin-top: 25px;
+            padding: 15px;
+            border: 1px solid #343b4b;
+            border-radius: 14px;
+            color: #777f8f;
+            background: #151a24;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: .8px;
+            cursor: not-allowed;
+            transition: .3s;
+        }
+
+        .login-button.ready {
+            color: white;
+            border-color: rgba(66,223,145,.4);
+            background: linear-gradient(135deg, #209b65, #32c47f);
+            box-shadow: 0 10px 30px rgba(66,223,145,.18);
+            cursor: pointer;
+        }
+
+        .login-button.ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(66,223,145,.25);
+        }
+
+        .login-button:disabled {
+            opacity: .65;
         }
 
         .error {
             margin-top: 16px;
-            padding: 12px;
-            border-radius: 10px;
-            color: #ff9d9d;
-            background: rgba(255,60,60,.1);
-            border: 1px solid rgba(255,60,60,.2);
+            padding: 13px;
+            border-radius: 12px;
+            color: #ff9ea7;
+            background: rgba(255,60,60,.08);
+            border: 1px solid rgba(255,60,60,.18);
+            font-size: 13px;
+            animation: shake .3s ease;
         }
+
+        @keyframes shake {
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-3px); }
+        }
+
+        /* =========================
+           DASHBOARD
+        ========================= */
 
         .dashboard {
             width: 100%;
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 30px 20px;
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px 20px 70px;
+            animation: dashboardIn .6s ease;
+        }
+
+        @keyframes dashboardIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .topbar {
@@ -147,71 +285,316 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 13px;
         }
 
         .brand-icon {
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 13px;
+            border-radius: 15px;
             background: linear-gradient(135deg, #6757f5, #9255ff);
+            box-shadow: 0 10px 30px rgba(103,87,245,.25);
+            animation: brandPulse 3s infinite;
+        }
+
+        @keyframes brandPulse {
+            50% {
+                box-shadow: 0 10px 40px rgba(146,85,255,.45);
+            }
         }
 
         .brand strong {
             display: block;
+            font-size: 16px;
         }
 
         .online {
-            color: #62e6a5;
-            font-size: 12px;
+            color: var(--green);
+            font-size: 11px;
         }
 
         .logout {
-            background: #171d2a;
-            border: 1px solid #293143;
-            color: #adb6c8;
+            padding: 11px 16px;
+            border: 1px solid rgba(255,83,100,.22);
+            border-radius: 12px;
+            color: #ff858f;
+            background: rgba(255,50,70,.07);
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .logout:hover {
+            background: rgba(255,50,70,.16);
+            border-color: rgba(255,83,100,.45);
+            transform: translateY(-1px);
         }
 
         .panel {
-            padding: 28px;
-            border: 1px solid rgba(255,255,255,.08);
-            border-radius: 22px;
-            background: rgba(17,21,32,.8);
-            backdrop-filter: blur(20px);
+            padding: 32px;
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            background: var(--panel);
+            backdrop-filter: blur(25px);
+            box-shadow:
+                0 30px 80px rgba(0,0,0,.35),
+                inset 0 1px 0 rgba(255,255,255,.03);
         }
 
         .panel h2 {
-            margin-top: 0;
+            margin: 0 0 7px;
+            font-size: 25px;
+        }
+
+        .panel-subtitle {
+            margin: 0 0 27px;
+            color: var(--muted);
+            font-size: 13px;
         }
 
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px 18px;
+            gap: 20px;
         }
 
-        .status {
-            margin-top: 25px;
-            padding: 18px;
+        .field {
+            padding: 17px;
+            border: 1px solid rgba(255,255,255,.055);
+            border-radius: 17px;
+            background: rgba(7, 11, 18, .38);
+            transition: .25s;
+        }
+
+        .field:focus-within {
+            border-color: rgba(117,101,255,.35);
+            background: rgba(13,17,28,.65);
+            box-shadow: 0 10px 35px rgba(0,0,0,.15);
+            transform: translateY(-2px);
+        }
+
+        .field label {
+            margin: 0 0 9px;
+        }
+
+        .help-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            border: 0;
+            padding: 0;
+            color: #697387;
+            background: transparent;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .help-toggle:hover {
+            color: #9ca6ba;
+        }
+
+        .help-arrow {
+            transition: .2s;
+        }
+
+        .help.open .help-arrow {
+            transform: rotate(180deg);
+        }
+
+        .help-content {
+            max-height: 0;
+            overflow: hidden;
+            color: #788398;
+            font-size: 11px;
+            line-height: 1.5;
+            transition: max-height .3s ease, margin-top .3s ease;
+        }
+
+        .help.open .help-content {
+            max-height: 100px;
+            margin-top: 9px;
+        }
+
+        .time-tools {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .time-tools input {
+            padding: 9px 11px;
+            font-size: 12px;
+        }
+
+        .time-tools button {
+            flex-shrink: 0;
+            border: 1px solid #30384a;
+            border-radius: 10px;
+            padding: 8px 11px;
+            color: #b7c0d0;
+            background: #141a26;
+            cursor: pointer;
+        }
+
+        .time-tools button:hover {
+            border-color: #6e61ff;
+            color: white;
+        }
+
+        /* SEND */
+
+        .send-area {
+            position: relative;
+            margin-top: 28px;
+        }
+
+        .send-button {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 16px;
+            border: 0;
             border-radius: 15px;
-            background: #0d121c;
-            border: 1px solid #222a39;
+            color: white;
+            background: linear-gradient(135deg, #6757f5, #9255ff);
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: .7px;
+            cursor: pointer;
+            box-shadow: 0 12px 35px rgba(103,87,245,.2);
+            transition: .25s;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 45px rgba(103,87,245,.3);
+        }
+
+        .send-button:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        .rocket {
+            display: inline-block;
+            margin-right: 7px;
+            transition: .2s;
+        }
+
+        .send-button:hover .rocket {
+            transform: translate(2px, -2px) rotate(-8deg);
+        }
+
+        .rocket.fly {
+            animation: rocketFly .9s cubic-bezier(.2,.8,.2,1) forwards;
+        }
+
+        @keyframes rocketFly {
+            0% {
+                transform: translate(0, 0) rotate(0);
+                opacity: 1;
+            }
+
+            25% {
+                transform: translate(10px, -10px) rotate(-8deg);
+            }
+
+            100% {
+                transform: translate(130px, -130px) rotate(-18deg);
+                opacity: 0;
+            }
+        }
+
+        .smoke {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            pointer-events: none;
+        }
+
+        .smoke span {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #a9b0bd;
+            opacity: 0;
+        }
+
+        .smoke.active span:nth-child(1) {
+            animation: smoke1 .8s ease-out forwards;
+        }
+
+        .smoke.active span:nth-child(2) {
+            animation: smoke2 .9s ease-out forwards;
+        }
+
+        .smoke.active span:nth-child(3) {
+            animation: smoke3 .7s ease-out forwards;
+        }
+
+        @keyframes smoke1 {
+            from {
+                opacity: .7;
+                transform: translate(-5px, 0) scale(.5);
+            }
+
+            to {
+                opacity: 0;
+                transform: translate(-45px, 15px) scale(1.8);
+            }
+        }
+
+        @keyframes smoke2 {
+            from {
+                opacity: .6;
+                transform: translate(5px, 0) scale(.5);
+            }
+
+            to {
+                opacity: 0;
+                transform: translate(40px, 20px) scale(1.5);
+            }
+        }
+
+        @keyframes smoke3 {
+            from {
+                opacity: .5;
+                transform: translate(0, 0) scale(.4);
+            }
+
+            to {
+                opacity: 0;
+                transform: translate(0, 35px) scale(2);
+            }
+        }
+
+        /* STATUS */
+
+        .status {
+            margin-top: 22px;
+            padding: 17px;
+            border-radius: 15px;
+            background: #0c111a;
+            border: 1px solid #202837;
         }
 
         .status-head {
-            color: #8892a5;
-            font-size: 13px;
-            margin-bottom: 10px;
+            color: #707b90;
+            font-size: 10px;
+            letter-spacing: 1.3px;
+            margin-bottom: 9px;
         }
 
         .status-value {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 16px;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         .dot {
@@ -223,49 +606,112 @@
 
         .processing .dot {
             background: #f5c84b;
-            box-shadow: 0 0 12px #f5c84b;
+            box-shadow: 0 0 14px #f5c84b;
             animation: pulse 1s infinite;
         }
 
         .done .dot {
-            background: #42df91;
-            box-shadow: 0 0 12px #42df91;
+            background: var(--green);
+            box-shadow: 0 0 14px var(--green);
         }
 
         .failed .dot {
-            background: #ff5e69;
-            box-shadow: 0 0 12px #ff5e69;
+            background: var(--red);
+            box-shadow: 0 0 14px var(--red);
         }
 
         @keyframes pulse {
             50% {
-                opacity: .35;
+                opacity: .3;
             }
         }
 
         .result {
-            margin-top: 18px;
+            margin-top: 15px;
             padding: 15px;
-            border-radius: 12px;
-            background: #090d15;
-            color: #9ba6ba;
-            white-space: pre-wrap;
-            font-family: monospace;
+            border-radius: 13px;
             font-size: 13px;
-            overflow: auto;
+            line-height: 1.5;
+            animation: resultIn .35s ease;
         }
 
-        @media (max-width: 650px) {
-            .grid {
-                grid-template-columns: 1fr;
+        @keyframes resultIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result.done {
+            color: #7de8ad;
+            background: rgba(66,223,145,.06);
+            border: 1px solid rgba(66,223,145,.15);
+        }
+
+        .result.error {
+            color: #ff929d;
+            background: rgba(255,83,100,.06);
+            border: 1px solid rgba(255,83,100,.15);
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .dashboard {
+                padding: 18px 12px 50px;
             }
 
             .panel {
-                padding: 20px;
+                padding: 20px 15px;
+                border-radius: 21px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 13px;
             }
 
             .topbar {
-                align-items: flex-start;
+                margin-bottom: 18px;
+            }
+
+            .brand-icon {
+                width: 43px;
+                height: 43px;
+            }
+
+            .logout {
+                padding: 9px 12px;
+            }
+
+            .login-card {
+                padding: 28px 22px;
+                border-radius: 24px;
+            }
+
+            .login-card h1 {
+                font-size: 30px;
+            }
+
+            .field {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            .login-card {
+                padding: 24px 18px;
+            }
+
+            .panel h2 {
+                font-size: 22px;
             }
         }
     </style>
@@ -273,28 +719,48 @@
 
 <body>
 
-<!-- LOGIN -->
+<!-- =========================
+     LOGIN
+========================= -->
 
 <div id="loginScreen" class="center">
 
-    <div class="card">
+    <div class="login-card">
 
-        <div class="logo">⚡</div>
+        <div class="login-logo">
+            ◈
+        </div>
 
-        <h1>Web Tool</h1>
+        <h1>LOG IN</h1>
 
-        <p class="subtitle">
-            Přihlas se pro pokračování.
+        <p class="small-text">
+            Enter your credentials to continue.
         </p>
 
-        <label>Username</label>
-        <input id="username" autocomplete="username">
+        <label for="username">Username</label>
 
-        <label>Password</label>
-        <input id="password" type="password" autocomplete="current-password">
+        <input
+            id="username"
+            autocomplete="username"
+            placeholder="Username"
+        >
 
-        <button class="full" id="loginButton" onclick="login()">
-            LOGIN
+        <label for="password">Password</label>
+
+        <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Password"
+        >
+
+        <button
+            class="login-button"
+            id="loginButton"
+            onclick="login()"
+            disabled
+        >
+            LOG IN
         </button>
 
         <div id="loginError" class="error hidden"></div>
@@ -304,7 +770,9 @@
 </div>
 
 
-<!-- DASHBOARD -->
+<!-- =========================
+     DASHBOARD
+========================= -->
 
 <div id="dashboardScreen" class="dashboard hidden">
 
@@ -313,7 +781,7 @@
         <div class="brand">
 
             <div class="brand-icon">
-                ⚡
+                ◈
             </div>
 
             <div>
@@ -324,7 +792,7 @@
         </div>
 
         <button class="logout" onclick="logout()">
-            Logout
+            LOG OUT
         </button>
 
     </div>
@@ -334,48 +802,239 @@
 
         <h2>Create Request</h2>
 
-        <p class="subtitle">
-            Vyplň parametry požadavku.
+        <p class="panel-subtitle">
+            Configure your request parameters.
         </p>
+
 
         <div class="grid">
 
-            <div>
-                <label>Score</label>
-                <input id="score" type="number" value="500">
+            <!-- SCORE -->
+
+            <div class="field">
+
+                <label for="score">Score</label>
+
+                <input
+                    id="score"
+                    type="number"
+                    placeholder="score"
+                >
+
+                <div class="help">
+
+                    <button
+                        class="help-toggle"
+                        onclick="toggleHelp(this)"
+                    >
+                        <span>HELP</span>
+                        <span class="help-arrow">▼</span>
+                    </button>
+
+                    <div class="help-content">
+                        Sem si můžeš napsat vlastní nápovědu pro Score.
+                    </div>
+
+                </div>
+
             </div>
 
-            <div>
-                <label>Time (ms)</label>
-                <input id="time" type="number" value="12000">
+
+            <!-- TIME -->
+
+            <div class="field">
+
+                <label for="time">Time (ms)</label>
+
+                <input
+                    id="time"
+                    type="number"
+                    placeholder="time in ms"
+                >
+
+                <div class="help">
+
+                    <button
+                        class="help-toggle"
+                        onclick="toggleHelp(this)"
+                    >
+                        <span>HELP</span>
+                        <span class="help-arrow">▼</span>
+                    </button>
+
+                    <div class="help-content">
+                        Sem si můžeš napsat vlastní nápovědu pro Time.
+                    </div>
+
+                    <div class="time-tools">
+
+                        <input
+                            id="secondsConverter"
+                            type="number"
+                            placeholder="seconds"
+                        >
+
+                        <button onclick="convertSeconds()">
+                            → ms
+                        </button>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div>
-                <label>Name</label>
-                <input id="name" placeholder="Name">
+
+            <!-- NAME -->
+
+            <div class="field">
+
+                <label for="name">Name</label>
+
+                <input
+                    id="name"
+                    placeholder="name"
+                >
+
+                <div class="help">
+
+                    <button
+                        class="help-toggle"
+                        onclick="toggleHelp(this)"
+                    >
+                        <span>HELP</span>
+                        <span class="help-arrow">▼</span>
+                    </button>
+
+                    <div class="help-content">
+                        Sem si můžeš napsat vlastní nápovědu pro Name.
+                    </div>
+
+                </div>
+
             </div>
 
-            <div>
-                <label>Count</label>
-                <input id="count" type="number" min="1" max="100" value="1">
+
+            <!-- COUNT -->
+
+            <div class="field">
+
+                <label for="count">Count</label>
+
+                <input
+                    id="count"
+                    type="number"
+                    min="1"
+                    max="100"
+                    placeholder="how much"
+                >
+
+                <div class="help">
+
+                    <button
+                        class="help-toggle"
+                        onclick="toggleHelp(this)"
+                    >
+                        <span>HELP</span>
+                        <span class="help-arrow">▼</span>
+                    </button>
+
+                    <div class="help-content">
+                        Sem si můžeš napsat vlastní nápovědu pro Count.
+                    </div>
+
+                </div>
+
             </div>
 
-            <div>
-                <label>Activity ID</label>
-                <input id="activityId" type="number">
+
+            <!-- ACTIVITY ID -->
+
+            <div class="field">
+
+                <label for="activityId">Activity ID 🆔</label>
+
+                <input
+                    id="activityId"
+                    type="number"
+                    placeholder="activity ID"
+                >
+
+                <div class="help">
+
+                    <button
+                        class="help-toggle"
+                        onclick="toggleHelp(this)"
+                    >
+                        <span>HELP</span>
+                        <span class="help-arrow">▼</span>
+                    </button>
+
+                    <div class="help-content">
+                        Sem si můžeš napsat vlastní nápovědu pro Activity ID.
+                    </div>
+
+                </div>
+
             </div>
 
-            <div>
-                <label>Template ID</label>
-                <input id="templateId" type="number">
+
+            <!-- TEMPLATE ID -->
+
+            <div class="field">
+
+                <label for="templateId">Template ID 🆔</label>
+
+                <input
+                    id="templateId"
+                    type="number"
+                    placeholder="template ID"
+                >
+
+                <div class="help">
+
+                    <button
+                        class="help-toggle"
+                        onclick="toggleHelp(this)"
+                    >
+                        <span>HELP</span>
+                        <span class="help-arrow">▼</span>
+                    </button>
+
+                    <div class="help-content">
+                        Sem si můžeš napsat vlastní nápovědu pro Template ID.
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
 
-        <button class="full" id="sendButton" onclick="sendRequest()">
-            SEND REQUEST
-        </button>
 
+        <!-- SEND -->
+
+        <div class="send-area">
+
+            <button
+                class="send-button"
+                id="sendButton"
+                onclick="sendRequest()"
+            >
+                <span class="rocket" id="rocket">🚀</span>
+                SEND REQUEST
+            </button>
+
+            <div class="smoke" id="smoke">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
 
         <div id="status" class="status">
 
@@ -384,11 +1043,17 @@
             </div>
 
             <div class="status-value">
+
                 <span class="dot"></span>
-                <span id="statusText">Ready</span>
+
+                <span id="statusText">
+                    Ready
+                </span>
+
             </div>
 
         </div>
+
 
         <div id="result" class="result hidden"></div>
 
@@ -400,6 +1065,11 @@
 <script>
 
 const API = "https://web-qzeu.onrender.com";
+
+
+/* =========================
+   API
+========================= */
 
 async function api(url, options = {}) {
 
@@ -415,6 +1085,10 @@ async function api(url, options = {}) {
 }
 
 
+/* =========================
+   AUTH CHECK
+========================= */
+
 async function checkAuth() {
 
     try {
@@ -429,11 +1103,131 @@ async function checkAuth() {
         }
 
     } catch (error) {
+
         showLogin();
+
     }
 
 }
 
+
+/* =========================
+   LOGIN
+========================= */
+
+function updateLoginButton() {
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const button =
+        document.getElementById("loginButton");
+
+    if (username && password) {
+
+        button.disabled = false;
+        button.classList.add("ready");
+
+    } else {
+
+        button.disabled = true;
+        button.classList.remove("ready");
+
+    }
+
+}
+
+
+document
+    .getElementById("username")
+    .addEventListener("input", updateLoginButton);
+
+document
+    .getElementById("password")
+    .addEventListener("input", updateLoginButton);
+
+
+document
+    .getElementById("password")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            const button =
+                document.getElementById("loginButton");
+
+            if (!button.disabled) {
+                login();
+            }
+
+        }
+
+    });
+
+
+async function login() {
+
+    const button =
+        document.getElementById("loginButton");
+
+    const errorBox =
+        document.getElementById("loginError");
+
+    errorBox.classList.add("hidden");
+
+    button.disabled = true;
+    button.textContent = "LOGGING IN...";
+
+    try {
+
+        const response = await api("/login", {
+
+            method: "POST",
+
+            body: JSON.stringify({
+
+                username:
+                    document.getElementById("username").value,
+
+                password:
+                    document.getElementById("password").value
+
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.error || "Login failed."
+            );
+        }
+
+        showDashboard();
+
+    } catch (error) {
+
+        errorBox.textContent = error.message;
+        errorBox.classList.remove("hidden");
+
+    } finally {
+
+        button.textContent = "LOG IN";
+
+        updateLoginButton();
+
+    }
+
+}
+
+
+/* =========================
+   SCREEN SWITCH
+========================= */
 
 function showLogin() {
 
@@ -461,66 +1255,76 @@ function showDashboard() {
 }
 
 
-async function login() {
+/* =========================
+   LOGOUT
+========================= */
 
-    const button = document.getElementById("loginButton");
-    const error = document.getElementById("loginError");
-
-    error.classList.add("hidden");
-
-    button.disabled = true;
-    button.textContent = "PŘIHLAŠOVÁNÍ...";
+async function logout() {
 
     try {
 
-        const response = await api("/login", {
-            method: "POST",
-
-            body: JSON.stringify({
-                username: document.getElementById("username").value,
-                password: document.getElementById("password").value
-            })
+        await api("/logout", {
+            method: "POST"
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || "Přihlášení selhalo.");
-        }
-
-        showDashboard();
-
-    } catch (error) {
-
-        errorBox = document.getElementById("loginError");
-
-        errorBox.textContent = error.message;
-        errorBox.classList.remove("hidden");
 
     } finally {
 
-        button.disabled = false;
-        button.textContent = "LOGIN";
+        showLogin();
+
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+
+        updateLoginButton();
 
     }
 
 }
 
 
-async function logout() {
+/* =========================
+   HELP
+========================= */
 
-    await api("/logout", {
-        method: "POST"
-    });
+function toggleHelp(button) {
 
-    showLogin();
+    const help =
+        button.parentElement;
+
+    help.classList.toggle("open");
 
 }
 
 
+/* =========================
+   TIME CONVERTER
+   ONLY LOCAL
+========================= */
+
+function convertSeconds() {
+
+    const seconds =
+        Number(
+            document.getElementById("secondsConverter").value
+        );
+
+    if (!Number.isFinite(seconds) || seconds < 0) {
+        return;
+    }
+
+    document.getElementById("time").value =
+        Math.round(seconds * 1000);
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
 function setStatus(type, text) {
 
-    const status = document.getElementById("status");
+    const status =
+        document.getElementById("status");
 
     status.className = "status";
 
@@ -528,66 +1332,172 @@ function setStatus(type, text) {
         status.classList.add(type);
     }
 
-    document.getElementById("statusText").textContent = text;
+    document.getElementById("statusText")
+        .textContent = text;
 
 }
 
 
+/* =========================
+   SEND
+========================= */
+
 async function sendRequest() {
 
-    const button = document.getElementById("sendButton");
-    const result = document.getElementById("result");
+    const button =
+        document.getElementById("sendButton");
+
+    const rocket =
+        document.getElementById("rocket");
+
+    const smoke =
+        document.getElementById("smoke");
+
+    const result =
+        document.getElementById("result");
+
 
     button.disabled = true;
 
-    result.classList.add("hidden");
+    result.className = "result hidden";
 
-    setStatus("processing", "Processing...");
+    /* Rocket animation */
+
+    rocket.classList.remove("fly");
+    smoke.classList.remove("active");
+
+    void rocket.offsetWidth;
+
+    rocket.classList.add("fly");
+    smoke.classList.add("active");
+
+
+    setStatus(
+        "processing",
+        "Processing..."
+    );
+
 
     const data = {
-        score: document.getElementById("score").value,
-        time: document.getElementById("time").value,
-        name: document.getElementById("name").value,
-        count: document.getElementById("count").value,
-        activityId: document.getElementById("activityId").value,
-        templateId: document.getElementById("templateId").value
+
+        score:
+            document.getElementById("score").value,
+
+        time:
+            document.getElementById("time").value,
+
+        name:
+            document.getElementById("name").value,
+
+        count:
+            document.getElementById("count").value,
+
+        activityId:
+            document.getElementById("activityId").value,
+
+        templateId:
+            document.getElementById("templateId").value
+
     };
+
 
     try {
 
         const response = await api("/run", {
+
             method: "POST",
+
             body: JSON.stringify(data)
+
         });
 
-        const json = await response.json();
+
+        const json =
+            await response.json();
+
 
         if (!response.ok || !json.success) {
-            throw new Error(json.error || "Request failed.");
+
+            throw new Error(
+                json.error || "Request failed."
+            );
+
         }
 
-        setStatus("done", "Done");
+
+        /* 50/50 Done / Complete */
+
+        const finalStatus =
+            Math.random() < .5
+                ? "Done"
+                : "Complete";
+
+
+        setStatus(
+            "done",
+            finalStatus
+        );
+
+
+        result.className =
+            "result done";
 
         result.textContent =
-            JSON.stringify(json, null, 2);
+            finalStatus;
 
-        result.classList.remove("hidden");
 
     } catch (error) {
 
-        setStatus("failed", "Error");
+        setStatus(
+            "failed",
+            "Error"
+        );
 
-        result.textContent = error.message;
-        result.classList.remove("hidden");
+
+        result.className =
+            "result error";
+
+
+        result.innerHTML =
+            "<strong>Error</strong><br>" +
+            escapeHtml(error.message);
+
 
     } finally {
 
         button.disabled = false;
 
+        setTimeout(() => {
+
+            rocket.classList.remove("fly");
+            smoke.classList.remove("active");
+
+        }, 1000);
+
     }
 
 }
 
+
+/* =========================
+   SAFE ERROR TEXT
+========================= */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================
+   START
+========================= */
 
 checkAuth();
 
@@ -595,3 +1505,4 @@ checkAuth();
 
 </body>
 </html>
+```
