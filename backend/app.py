@@ -25,7 +25,7 @@ CORS(
     app,
     supports_credentials=True,
     origins=[
-        "https://rl897240-del.github.io"
+	"https://ouyo-y.github.io"
     ]
 )
 
